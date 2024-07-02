@@ -1,0 +1,103 @@
+def sequential_search(arr, key, value):
+    results = []
+    for i, book in enumerate(arr):
+        if book[key] == value:
+            results.append((i, book))
+    return results
+
+def main():
+    arr = []
+
+    while True:
+        print("\nMenu:")
+        print("1. Masukan data buku")
+        print("2. Hapus data buku")
+        print("3. Cari data buku")
+        print("4. Lihat data buku")
+        print("5. Keluar")
+
+        choice = input("Masukkan pilihan Anda (1-5): ")
+
+        if choice == '1':
+            title = input("Masukkan judul buku: ")
+            author = input("Masukkan nama penulis: ")
+            year = input("Masukkan tahun terbit: ")
+            book = {
+                'title': title,
+                'author': author,
+                'year': int(year)
+            }
+            arr.append(book)
+            arr.sort(key=lambda x: (x['title'], x['year']))
+            print(f"Buku '{title}' telah ditambahkan ke dalam array")
+        
+        elif choice == '2':
+            if len(arr) == 0:
+                print("Data kosong, tidak ada buku untuk dihapus.")
+            else:
+                print("Isi data saat ini: ")
+                for i, book in enumerate(arr, start=1):
+                    print(f"{i}. Judul: {book['title']}, Penulis: {book['author']}, Tahun Terbit: {book['year']}")
+                try:
+                    index = int(input("Masukkan nomor buku yang akan dihapus: "))
+                    if 1 <= index <= len(arr):
+                        removed_book = arr.pop(index - 1)
+                        print(f"Buku '{removed_book['title']}' telah dihapus dari array")
+                    else:
+                        print("Nomor tidak tersedia")
+                except ValueError:
+                    print("Silahkan masukan nomor yang benar")
+        
+        elif choice == '3':
+            if len(arr) == 0:
+                print("Data kosong, tidak ada buku untuk dicari.")
+            else:
+                print("\nCari berdasarkan:")
+                print("1. Judul buku")
+                print("2. Nama penulis")
+                print("3. Tahun terbit")
+                
+                search_choice = input("Masukkan pilihan Anda (1-3): ")
+                
+                if search_choice == '1':
+                    value = input("Masukkan judul buku yang akan dicari: ")
+                    results = sequential_search(arr, 'title', value)
+                elif search_choice == '2':
+                    value = input("Masukkan nama penulis yang akan dicari: ")
+                    results = sequential_search(arr, 'author', value)
+                elif search_choice == '3':
+                    try:
+                        value = int(input("Masukkan tahun terbit yang akan dicari: "))
+                        results = sequential_search(arr, 'year', value)
+                    except ValueError:
+                        print("Masukkan tahun yang valid.")
+                        continue
+                else:
+                    print("Pilihan tidak valid.")
+                    continue
+                
+                if results:
+                    for index, book in results:
+                        print(f"Buku '{book['title']}' ditemukan pada indeks ke {index + 1}.")
+                        print(f"Penulis: {book['author']}")
+                        print(f"Tahun Terbit: {book['year']}")
+                else:
+                    print(f"Tidak ada buku yang ditemukan dengan kriteria tersebut.")
+        
+        elif choice == '4':
+            if len(arr) == 0:
+                print("Data kosong, tidak ada data untuk ditampilkan")
+            else:
+                print("Isi data saat ini: ")
+                for i, book in enumerate(arr, start=1):
+                    print(f"{i}. Judul: {book['title']}, Penulis: {book['author']}, Tahun Terbit: {book['year']}")
+        
+        elif choice == '5':
+            print("Anda telah keluar dari program")
+            break
+        
+        else:
+            print("Pilihan tidak valid. Masukkan pilihan 1 sampai 5")
+
+if __name__ == "__main__":
+    main()
